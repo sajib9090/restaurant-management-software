@@ -1,0 +1,16 @@
+{
+  "name": "restaurant-management-software",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "frontend": "cd restaurant-management-ui && npm run dev",
+    "backend": "cd restaurant-management-backend && npm start",
+    "start": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "author": "sajib hossain",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
