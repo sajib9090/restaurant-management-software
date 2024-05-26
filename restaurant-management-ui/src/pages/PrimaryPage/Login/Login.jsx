@@ -1,13 +1,13 @@
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
 import { useState } from "react";
 import Lottie from "lottie-react";
-import restaurant from "../../../public/animation/Animation - 1716694632912.json";
+import restaurant from "../../../../public/animation/Animation - 1716694632912.json";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
+import { useLoginMutation } from "../../../redux/features/auth/authApi";
 import { jwtDecode } from "jwt-decode";
-import { setUser } from "../../redux/features/auth/authSlice";
-import PrimaryLoading from "../../components/Loading/PrimaryLoading/PrimaryLoading";
+import { setUser } from "../../../redux/features/auth/authSlice";
+import PrimaryLoading from "../../../components/Loading/PrimaryLoading/PrimaryLoading";
 
 const Login = () => {
   const [visible, setVisible] = useState(false);
@@ -75,7 +75,7 @@ const Login = () => {
   };
   return (
     <div className="min-h-screen login">
-      <div className="flex justify-center items-center min-h-screen login-content max-w-7xl mx-auto">
+      <div className="flex justify-center items-center min-h-screen login-content max-w-[118rem] mx-auto">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
           <h2 className="text-2xl font-bold mb-2 text-center">Good Morning</h2>
           <p className="text-gray-600 mb-8 text-center">
@@ -161,9 +161,9 @@ const Login = () => {
           </form>
           <p className="mt-8 text-center text-gray-700">
             Dont have an account?{" "}
-            <a href="#" className="text-yellow-500 hover:underline">
+            <Link to="/register" className="text-yellow-500 hover:underline">
               Sign up for free
-            </a>
+            </Link>
           </p>
         </div>
         <div className="hidden md:block w-1/2 h-full">
@@ -174,7 +174,7 @@ const Login = () => {
               loop={true}
             />
             <p className="text-white text-2xl font-semibold -mt-12">
-              Digital platform for Restaurant
+              Innovative Solutions for Modern Restaurants
             </p>
           </div>
         </div>

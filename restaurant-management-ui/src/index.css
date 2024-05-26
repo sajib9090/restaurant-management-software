@@ -32,3 +32,8 @@
   position: relative;
   z-index: 2;
 }
+
+.ant-menu-item.active-menu-item {
+  background-color: #1677ff;
+  color: white;
+}
