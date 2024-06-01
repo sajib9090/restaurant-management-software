@@ -2,7 +2,7 @@ import { client } from "../config/db.js";
 
 const db_name = "Restaurant-management";
 
-const usersCollection = client.db(db_name).collection("users");
-const brandsCollection = client.db(db_name).collection("brands");
+export const usersCollection = client.db(db_name).collection("users");
+export const brandsCollection = client.db(db_name).collection("brands");
+export const tablesCollection = client.db(db_name).collection("tables");
 
-export { usersCollection, brandsCollection };

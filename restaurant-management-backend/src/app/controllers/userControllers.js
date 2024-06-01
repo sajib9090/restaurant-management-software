@@ -326,7 +326,7 @@ export const handleLoginUser = async (req, res, next) => {
       role: user.role,
     };
 
-    const accessToken = await createJWT(loggedInUser, jwtAccessToken, "10s");
+    const accessToken = await createJWT(loggedInUser, jwtAccessToken, "10m");
 
     const refreshToken = await createJWT(loggedInUser, jwtRefreshToken, "7d");
     res.cookie("refreshToken", refreshToken, {
@@ -398,7 +398,7 @@ export const handleRefreshToken = async (req, res, next) => {
     const accessToken = await createJWT(
       { user: decodedToken },
       jwtAccessToken,
-      "10s"
+      "10m"
     );
     // Update req.user with the new decoded user information
     req.user = decodedToken.user;

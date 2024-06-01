@@ -22,12 +22,25 @@ import {
   PlusCircleOutlined,
   SunFilled,
   MoonOutlined,
+  LogoutOutlined,
+  BugOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { currentUser, logout } from "../../../redux/features/auth/authSlice";
 
-const Sidebar = ({ setDark, dark }) => {
+const Sidebar = ({ setDark, dark, collapsed }) => {
+  const user = useSelector(currentUser);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/login");
+  };
+
   const initialMode = localStorage.getItem("menu-mode") === "true";
   const [mode, setMode] = useState(initialMode);
   const location = useLocation();
@@ -252,6 +265,16 @@ const Sidebar = ({ setDark, dark }) => {
         },
       ],
     },
+    {
+      label: <Link to="/user/report-bugs">Report Bugs</Link>,
+      key: "/user/report-bugs",
+      icon: <BugOutlined />,
+    },
+    user && {
+      label: <button onClick={handleLogout}>Logout</button>,
+      key: "/user/logout",
+      icon: <LogoutOutlined />,
+    },
   ];
 
   const getPathKeys = (path) => {
@@ -267,7 +290,9 @@ const Sidebar = ({ setDark, dark }) => {
 
   return (
     <Menu
-      className="w-[200px] min-h-[calc(100vh-200px)]"
+      className={`w-[200px] ${
+        collapsed ? "min-h-[calc(100vh-200px)]" : "min-h-[calc(100vh-250px)]"
+      }`}
       mode={mode ? "inline" : "vertical"}
       theme={dark ? "dark" : "light"}
       items={items}

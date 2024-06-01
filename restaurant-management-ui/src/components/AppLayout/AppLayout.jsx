@@ -7,6 +7,7 @@ import { Outlet } from "react-router-dom";
 // import { useSelector } from "react-redux";
 // import { currentUserDetails } from "../../redux/features/auth/authSlice";
 import HeaderInfo from "../Navbar/HeaderInfo/HeaderInfo";
+import DownBar from "../Navbar/DownBar/DownBar";
 const { Header, Sider, Content } = Layout;
 
 const AppLayout = () => {
@@ -25,7 +26,8 @@ const AppLayout = () => {
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <SideDataBar collapsed={collapsed} dark={dark} />
-        <Sidebar dark={dark} setDark={setDark} />
+        <Sidebar dark={dark} setDark={setDark} collapsed={collapsed} />
+        {!collapsed && <DownBar dark={dark} />}
       </Sider>
       <Layout>
         <Header

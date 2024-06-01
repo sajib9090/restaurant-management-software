@@ -18,6 +18,8 @@ const ExpiredCredentials = lazy(() =>
   import("../pages/PrimaryPage/ExpiredCredentials/ExpiredCredentials")
 );
 const Profile = lazy(() => import("../pages/Dashboard/Profile/Profile"));
+const ReportBugs = lazy(() => import("../pages/ReportBugs/ReportBugs"));
+const SelectOrder = lazy(() => import("../pages/Sell/SelectOrder/SelectOrder"));
 
 export const router = createBrowserRouter([
   {
@@ -106,10 +108,26 @@ export const router = createBrowserRouter([
         ),
       },
       {
+        path: "/user/sell/:name",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <SelectOrder />
+          </Suspense>
+        ),
+      },
+      {
         path: "/user/profile",
         element: (
           <Suspense fallback={<h1>Loading...</h1>}>
             <Profile />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/user/report-bugs",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <ReportBugs />
           </Suspense>
         ),
       },
