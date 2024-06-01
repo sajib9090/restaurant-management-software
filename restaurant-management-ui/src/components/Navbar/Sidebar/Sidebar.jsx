@@ -22,24 +22,12 @@ import {
   PlusCircleOutlined,
   SunFilled,
   MoonOutlined,
-  LogoutOutlined,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { currentUser, logout } from "../../../redux/features/auth/authSlice";
+import { Link, useLocation } from "react-router-dom";
 
 const Sidebar = ({ setDark, dark }) => {
-  const user = useSelector(currentUser);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    dispatch(logout());
-    navigate("/login");
-  };
-
   const initialMode = localStorage.getItem("menu-mode") === "true";
   const [mode, setMode] = useState(initialMode);
   const location = useLocation();
@@ -263,11 +251,6 @@ const Sidebar = ({ setDark, dark }) => {
           key: "101",
         },
       ],
-    },
-    user && {
-      label: <button onClick={handleLogout}>Logout</button>,
-      key: "/user/logout",
-      icon: <LogoutOutlined />,
     },
   ];
 

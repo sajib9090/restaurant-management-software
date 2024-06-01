@@ -17,6 +17,7 @@ const Services = lazy(() => import("../pages/PrimaryPage/Services/Services"));
 const ExpiredCredentials = lazy(() =>
   import("../pages/PrimaryPage/ExpiredCredentials/ExpiredCredentials")
 );
+const Profile = lazy(() => import("../pages/Dashboard/Profile/Profile"));
 
 export const router = createBrowserRouter([
   {
@@ -101,6 +102,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<h1>Loading...</h1>}>
             <Sell />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/user/profile",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <Profile />
           </Suspense>
         ),
       },
