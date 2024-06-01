@@ -19,19 +19,25 @@ const menu = [
     label: "Login",
     path: "/login",
   },
+  {
+    label: "Register",
+    path: "/register",
+  },
 ];
 
 const PrimaryAppLayout = () => {
   const location = useLocation();
 
-  const items = menu?.map((item, index) => ({
+  const items = menu.map((item, index) => ({
     key: index + 1,
     label: <Link to={item.path}>{item.label}</Link>,
     className: location.pathname === item.path ? "active-menu-item" : "",
   }));
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
+
   return (
     <Layout>
       <Header
@@ -40,10 +46,17 @@ const PrimaryAppLayout = () => {
           alignItems: "center",
         }}
       >
-        <div className="demo-logo" />
+        <div className="mr-24">
+          <Link to="/" className="text-2xl text-white">
+            Ahaar Assist
+          </Link>
+        </div>
         <Menu
           theme="dark"
           mode="horizontal"
+          selectedKeys={[
+            items.find((item) => item.className === "active-menu-item")?.key,
+          ]}
           items={items}
           style={{
             flex: 1,
@@ -62,7 +75,6 @@ const PrimaryAppLayout = () => {
           <Outlet />
         </div>
       </Content>
-
       <Footer
         style={{
           textAlign: "center",

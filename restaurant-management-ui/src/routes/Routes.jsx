@@ -14,14 +14,17 @@ const DailySellReport = lazy(() =>
 const PrimaryHome = lazy(() => import("../pages/PrimaryPage/Home/Home"));
 const About = lazy(() => import("../pages/PrimaryPage/About/About"));
 const Services = lazy(() => import("../pages/PrimaryPage/Services/Services"));
+const ExpiredCredentials = lazy(() =>
+  import("../pages/PrimaryPage/ExpiredCredentials/ExpiredCredentials")
+);
 
 export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <NonAuthenticatedRoute>
-        <PublicLayout />
-      </NonAuthenticatedRoute>
+      // <NonAuthenticatedRoute>
+      <PublicLayout />
+      // </NonAuthenticatedRoute>
     ),
     errorElement: <h1>Error</h1>,
     children: [
@@ -62,6 +65,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<h1>Loading...</h1>}>
             <Register />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/expired-credentials",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <ExpiredCredentials />
           </Suspense>
         ),
       },

@@ -1,12 +1,18 @@
 import { EyeFilled, EyeInvisibleFilled } from "@ant-design/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Lottie from "lottie-react";
 import restaurant from "../../../../public/animation/Animation - 1716694632912.json";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useLoginMutation } from "../../../redux/features/auth/authApi";
+import {
+  useGetUserByIdQuery,
+  useLoginMutation,
+} from "../../../redux/features/auth/authApi";
 import { jwtDecode } from "jwt-decode";
-import { setUser } from "../../../redux/features/auth/authSlice";
+import {
+  setUser,
+  setUserDetails,
+} from "../../../redux/features/auth/authSlice";
 import PrimaryLoading from "../../../components/Loading/PrimaryLoading/PrimaryLoading";
 
 const Login = () => {
@@ -15,7 +21,6 @@ const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    rememberMe: false,
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -46,6 +51,27 @@ const Login = () => {
   const navigate = useNavigate();
 
   const [login, { isLoading }] = useLoginMutation();
+  const [userId, setUserId] = useState("");
+  const [userLoading, setUserLoading] = useState(false);
+  const { data: userData, error: userError } = useGetUserByIdQuery(userId, {
+    skip: !userId,
+  });
+
+  useEffect(() => {
+    if (userId) {
+      setUserLoading(true);
+    }
+    if (userData && userId) {
+      dispatch(setUserDetails({ info: userData.data }));
+      navigate("/user");
+      setUserLoading(false);
+    }
+    if (userError) {
+      setErrorMessage("Failed to fetch user details: " + userError?.message);
+      setUserLoading(false);
+      navigate("/login");
+    }
+  }, [userId, userData, userError, dispatch, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -55,7 +81,8 @@ const Login = () => {
     };
 
     if (!data?.username_email_mobile || !data?.password) {
-      setErrorMessage("Email or username or mobile and password is required");
+      setErrorMessage("All fields are required");
+      return;
     }
 
     try {
@@ -63,16 +90,19 @@ const Login = () => {
       const token = res?.accessToken;
       const decoded = jwtDecode(token);
 
+      setUserId(decoded?._id);
+
       const user = {
         user: decoded,
         token: token,
       };
+
       dispatch(setUser(user));
-      navigate("/user");
     } catch (error) {
       setErrorMessage("Login failed: " + error?.data?.message);
     }
   };
+
   return (
     <div className="min-h-screen login">
       <div className="flex justify-center items-center min-h-screen login-content max-w-[118rem] mx-auto">
@@ -118,12 +148,12 @@ const Login = () => {
               {visible ? (
                 <EyeFilled
                   onClick={() => setVisible(!visible)}
-                  className="absolute bottom-4 right-3 cursor-pointer text-xl"
+                  className="absolute bottom-[14px] right-3 cursor-pointer text-xl"
                 />
               ) : (
                 <EyeInvisibleFilled
                   onClick={() => setVisible(!visible)}
-                  className="absolute bottom-4 right-3 cursor-pointer text-xl"
+                  className="absolute bottom-[14px] right-3 cursor-pointer text-xl"
                 />
               )}
             </div>
@@ -136,10 +166,16 @@ const Login = () => {
               </Link>
             </div>
             <button
+              disabled={
+                formData?.email?.length == 0 ||
+                formData?.password?.length == 0 ||
+                isLoading ||
+                userLoading
+              }
               type="submit"
               className="w-full flex justify-center items-center bg-[#001529] text-white p-3 rounded-lg hover:bg-[#E6F4FF] transition duration-500 hover:text-[#5977FF]"
             >
-              {isLoading ? <PrimaryLoading /> : "LOGIN"}
+              {isLoading || userLoading ? <PrimaryLoading /> : "LOGIN"}
             </button>
 
             {/* <div className="flex items-center my-4">
