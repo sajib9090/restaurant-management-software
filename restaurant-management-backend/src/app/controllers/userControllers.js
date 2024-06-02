@@ -13,10 +13,11 @@ import bcrypt from "bcryptjs";
 import createJWT from "../helpers/createJWT.js";
 import {
   clientURL,
+  frontEndURL,
   jwtAccessToken,
   jwtRefreshToken,
   jwtSecret,
-} from "../../important.js";
+} from "../../../important.js";
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import { emailWithNodeMailer } from "../helpers/email.js";
@@ -191,7 +192,7 @@ export const handleActivateUserAccount = async (req, res, next) => {
     }
 
     if (existingUser.email_verified) {
-      return res.redirect("http://localhost:5173/login");
+      return res.redirect(`${frontEndURL}/login`);
     }
 
     const updateUser = await usersCollection.updateOne(
@@ -207,10 +208,10 @@ export const handleActivateUserAccount = async (req, res, next) => {
       throw createError(500, "Something went wrong. Please try again");
     }
 
-    return res.redirect("http://localhost:5173/login");
+    return res.redirect(`${frontEndURL}/login`);
   } catch (error) {
     if (error.name === "TokenExpiredError") {
-      return res.redirect("http://localhost:5173/expired-credentials");
+      return res.redirect(`${frontEndURL}/expired-credentials`);
     }
     next(error);
   }

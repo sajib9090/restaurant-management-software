@@ -17,13 +17,14 @@ const HeaderInfo = () => {
     dispatch(logout());
     navigate("/login");
   };
+  
 
   const items = [
     {
       key: "0",
       label: (
         <div className="my-4">
-          <div className="w-28 h-28 border border-gray-300 rounded-full">
+          <div className="w-32 h-32 border border-gray-300 rounded-full">
             <img
               className="rounded-full"
               src={user?.avatar ? user?.avatar : avatar}

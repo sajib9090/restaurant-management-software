@@ -25,9 +25,9 @@ export const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      // <NonAuthenticatedRoute>
-      <PublicLayout />
-      // </NonAuthenticatedRoute>
+      <NonAuthenticatedRoute>
+        <PublicLayout />
+      </NonAuthenticatedRoute>
     ),
     errorElement: <h1>Error</h1>,
     children: [
