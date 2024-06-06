@@ -5,7 +5,8 @@ const tableApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getAllTables: builder.query({
       query: () => ({
-        url: "/tables/get-all",
+        // url: `/tables/get-all?brand_id=${brand_id}&user_id=${user_id}`,
+        url: `/tables/get-all`,
         method: "GET",
       }),
       providesTags: ["Table"],
@@ -26,6 +27,14 @@ const tableApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: ["Table"],
     }),
+    updateTable: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `/tables/update-table/${id}`,
+        method: "PATCH",
+        body: data,
+      }),
+      invalidatesTags: ["Table"],
+    }),
   }),
 });
 
@@ -33,4 +42,5 @@ export const {
   useGetAllTablesQuery,
   useAddTableMutation,
   useDeleteTableMutation,
+  useUpdateTableMutation,
 } = tableApi;

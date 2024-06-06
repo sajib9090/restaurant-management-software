@@ -23,6 +23,12 @@ const SelectOrder = lazy(() => import("../pages/Sell/SelectOrder/SelectOrder"));
 const MaintainTable = lazy(() =>
   import("../pages/Dashboard/Features/MaintainTable/MaintainTable")
 );
+const MaintainCategories = lazy(() =>
+  import("../pages/Dashboard/Features/MaintainCategories/MaintainCategories")
+);
+const MaintainMenuItems = lazy(() =>
+  import("../pages/Dashboard/Features/MaintainMenuItems/MaintainMenuItems")
+);
 
 export const router = createBrowserRouter([
   {
@@ -147,6 +153,22 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<h1>Loading...</h1>}>
             <MaintainTable />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/user/dashboard/features/maintain-categories",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <MaintainCategories />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/user/dashboard/features/maintain-menu-items",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <MaintainMenuItems />
           </Suspense>
         ),
       },

@@ -3,17 +3,16 @@ import { ObjectId } from "mongodb";
 import { tablesCollection } from "../collections/collections.js";
 import { validateString } from "../helpers/validateString.js";
 import slugify from "slugify";
-import validator from "validator";
 import { requiredField } from "../helpers/requiredField.js";
 import crypto from "crypto";
 
 export const handleCreateTable = async (req, res, next) => {
   const { table_name } = req.body;
-  const user = req.user;
+  const { user } = req.user;
 
   try {
-    if (!user?.user_id) {
-      throw createError(400, "Fuck off");
+    if (!user) {
+      throw createError(401, "User not found. Login Again");
     }
     requiredField(table_name, "Table Name is required");
     const processedTableName = validateString(table_name, "Table Name", 2, 30);
@@ -29,6 +28,7 @@ export const handleCreateTable = async (req, res, next) => {
     const tableSlug = slugify(processedTableName);
     const tableCount = await tablesCollection.countDocuments();
     const generateTableCode = crypto.randomBytes(12).toString("hex");
+    
     const newTable = {
       table_name: processedTableName,
       table_id: tableCount + 1 + "-" + generateTableCode,
@@ -38,8 +38,7 @@ export const handleCreateTable = async (req, res, next) => {
       createdAt: new Date(),
     };
 
-    const table = await tablesCollection.insertOne(newTable);
-    console.log(table);
+    await tablesCollection.insertOne(newTable);
 
     res.status(200).send({
       success: true,
@@ -51,11 +50,10 @@ export const handleCreateTable = async (req, res, next) => {
 };
 
 export const handleGetTables = async (req, res, next) => {
-  const user = req.user;
-
+  const { user } = req.user;
   try {
-    if (!user?.brand_id) {
-      throw createError(401, "Brand not found");
+    if (!user) {
+      throw createError(401, "User not found. Login Again");
     }
     const tables = await tablesCollection
       .find({ brand: user?.brand_id })
@@ -88,6 +86,54 @@ export const handleDeleteTable = async (req, res, next) => {
     res.status(200).send({
       success: true,
       message: "Table deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const handleEditTable = async (req, res, next) => {
+  const { table_name } = req.body;
+  const id = req.params;
+  const { user } = req.user;
+  try {
+    if (!user) {
+      throw createError(401, "User not found. Login Again");
+    }
+    if (!ObjectId.isValid(id)) {
+      throw createError(400, "Invalid id");
+    }
+    requiredField(table_name, "Table Name is required");
+    const processedTableName = validateString(table_name, "Table Name", 2, 30);
+
+    const existingTable = await tablesCollection.findOne({
+      $and: [{ table_name: processedTableName }, { brand: user?.brand_id }],
+    });
+
+    if (existingTable) {
+      throw createError(400, "Table name already exists");
+    }
+
+    const tableSlug = slugify(processedTableName);
+
+    const editedFields = {
+      table_name: processedTableName,
+      table_slug: tableSlug,
+      updatedBy: user?.user_id,
+      updatedAt: new Date(),
+    };
+
+    const filter = { _id: new ObjectId(id) };
+    const result = await tablesCollection.findOneAndUpdate(filter, {
+      $set: editedFields,
+    });
+
+    if (!result) {
+      throw createError(400, "Table not updated. Try again");
+    }
+    res.status(200).send({
+      success: true,
+      message: "Table updated",
     });
   } catch (error) {
     next(error);
