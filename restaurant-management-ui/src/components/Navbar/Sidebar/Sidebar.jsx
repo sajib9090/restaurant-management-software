@@ -17,7 +17,6 @@ import {
   ScissorOutlined,
   TeamOutlined,
   UserSwitchOutlined,
-  UserAddOutlined,
   BarChartOutlined,
   PlusCircleOutlined,
   SunFilled,
@@ -25,17 +24,21 @@ import {
   LogoutOutlined,
   BugOutlined,
   GoldenFilled,
+  PlusSquareFilled,
 } from "@ant-design/icons";
 import { Menu } from "antd";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { currentUser, logout } from "../../../redux/features/auth/authSlice";
+import CustomModal from "../../Modal/Modal";
+import AddMember from "../../Member/AddMember";
 
 const Sidebar = ({ setDark, dark, collapsed }) => {
   const user = useSelector(currentUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -203,32 +206,10 @@ const Sidebar = ({ setDark, dark, collapsed }) => {
           ],
         },
         {
-          label: "Staff Records",
+          label: <Link to="/user/dashboard/staff-records">Staff Records</Link>,
           key: "/user/dashboard/staff-records",
           icon: <GithubFilled />,
           title: "Staff Records",
-          children: [
-            {
-              label: (
-                <Link to="/user/dashboard/staff-records/add-new-staff">
-                  Add New Staff
-                </Link>
-              ),
-              key: "/user/dashboard/staff-records/add-new-staff",
-              icon: <UserAddOutlined />,
-              title: "Add New Staff",
-            },
-            {
-              label: (
-                <Link to="/user/dashboard/staff-records/staffs-sell-records">
-                  Staffs Sell Records
-                </Link>
-              ),
-              key: "/user/dashboard/staff-records/staffs-sell-records",
-              icon: <BarChartOutlined />,
-              title: "Staff Sell Records",
-            },
-          ],
         },
         {
           label: "Expense Reports",
@@ -313,6 +294,14 @@ const Sidebar = ({ setDark, dark, collapsed }) => {
       icon: <BugOutlined />,
       title: "Report Bugs",
     },
+    {
+      label: (
+        <button onClick={() => setIsModalOpen(!isModalOpen)}>Add Member</button>
+      ),
+      key: "/user/add-member",
+      icon: <PlusSquareFilled />,
+      title: "Add Member",
+    },
     user && {
       label: <button onClick={handleLogout}>Logout</button>,
       key: "/user/logout",
@@ -333,16 +322,21 @@ const Sidebar = ({ setDark, dark, collapsed }) => {
   const openKeys = getPathKeys(location.pathname).slice(0, -1);
 
   return (
-    <Menu
-      className={`w-[200px] ${
-        collapsed ? "min-h-[calc(100vh-200px)]" : "min-h-[calc(100vh-250px)]"
-      }`}
-      mode={mode ? "inline" : "vertical"}
-      theme={dark ? "dark" : "light"}
-      items={items}
-      selectedKeys={selectedKeys}
-      defaultOpenKeys={openKeys}
-    />
+    <>
+      <Menu
+        className={`w-[200px] ${
+          collapsed ? "min-h-[calc(100vh-200px)]" : "min-h-[calc(100vh-250px)]"
+        }`}
+        mode={mode ? "inline" : "vertical"}
+        theme={dark ? "dark" : "light"}
+        items={items}
+        selectedKeys={selectedKeys}
+        defaultOpenKeys={openKeys}
+      />
+      <CustomModal setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen}>
+        <AddMember setIsModalOpen={setIsModalOpen} isModalOpen={isModalOpen} />
+      </CustomModal>
+    </>
   );
 };
 

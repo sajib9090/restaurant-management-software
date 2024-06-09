@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
-import { Table } from "antd";
+import { Table, Popconfirm } from "antd";
 import { useState } from "react";
 import { EditFilled, PlusSquareFilled, DeleteFilled } from "@ant-design/icons";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import CustomModal from "../Modal/Modal";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import {
@@ -151,23 +151,31 @@ const Category = ({ categories }) => {
           Add New Category
         </button>
         {selectedRowKeys?.length > 0 && (
-          <button
-            onClick={handleDelete}
-            disabled={deleteLoading}
-            className="h-[40px] w-[220px] border border-gray-300 text-red-500 text-lg my-6 rounded flex items-center justify-center gap-2"
+          <Popconfirm
+            title="Delete Staff"
+            description="Are you sure you want to delete the selected staff?"
+            onConfirm={handleDelete}
+            okText="Yes"
+            cancelText="No"
+            placement="topLeft"
           >
-            {deleteLoading ? (
-              <>
-                Deleting ...
-                <PrimaryLoading />
-              </>
-            ) : (
-              <>
-                <DeleteFilled />
-                Delete Selected-({selectedRowKeys?.length})
-              </>
-            )}
-          </button>
+            <button
+              disabled={deleteLoading}
+              className="h-[40px] w-[220px] border border-gray-300 text-red-500 text-lg my-6 rounded flex items-center justify-center gap-2"
+            >
+              {deleteLoading ? (
+                <>
+                  Deleting ...
+                  <PrimaryLoading />
+                </>
+              ) : (
+                <>
+                  <DeleteFilled />
+                  Delete Selected-({selectedRowKeys?.length})
+                </>
+              )}
+            </button>
+          </Popconfirm>
         )}
       </div>
       <Table
@@ -237,7 +245,7 @@ const Category = ({ categories }) => {
         ) : null}
       </CustomModal>
 
-      <Toaster position="top-right" richColors />
+      
     </div>
   );
 };
