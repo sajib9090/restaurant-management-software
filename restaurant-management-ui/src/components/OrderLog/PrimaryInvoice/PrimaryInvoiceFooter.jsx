@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import CurrencyFormatter from "../../Currencyformatter/CurrencyFormatter";
 import { useGetSingleMemberByMobileQuery } from "../../../redux/features/member/memberApi";
 import PrimaryLoading from "../../Loading/PrimaryLoading/PrimaryLoading";
+import KitchenInvoice from "./KitchenInvoice";
+import CustomerInvoice from "./CustomerInvoice";
 
-const PrimaryInvoice = ({ tableWiseOrder }) => {
+const PrimaryInvoice = ({ tableWiseOrder, selectedStaff }) => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [membershipToggle, setMembershipToggle] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -156,14 +158,15 @@ const PrimaryInvoice = ({ tableWiseOrder }) => {
         )}
       </div>
 
-      <div className="flex justify-center gap-6">
-        <button className="px-4 py-2 bg-yellow-500 text-white rounded shadow hover:bg-yellow-600 transition duration-200">
-          Kitchen Copy
-        </button>
-        <button className="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600 transition duration-200">
-          Customer Copy
-        </button>
-        <button className="px-4 py-2 bg-green-500 text-white rounded shadow hover:bg-green-600 transition duration-200">
+      <div className="flex justify-center gap-3">
+        <KitchenInvoice tableWiseOrder={tableWiseOrder} />
+        <CustomerInvoice
+          tableWiseOrder={tableWiseOrder}
+          totalDiscount={totalDiscount}
+          totalBill={totalBill}
+          selectedStaff={selectedStaff}
+        />
+        <button className="px-4 py-2 bg-green-600 text-white rounded shadow hover:bg-green-700 transition duration-200">
           Payment Done
         </button>
       </div>

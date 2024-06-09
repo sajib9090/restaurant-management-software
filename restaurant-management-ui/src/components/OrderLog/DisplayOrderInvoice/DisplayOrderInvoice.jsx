@@ -1,5 +1,5 @@
 /* eslint-disable react/prop-types */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import CustomModal from "../../Modal/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import { currentUser } from "../../../redux/features/auth/authSlice";
@@ -11,7 +11,7 @@ import {
   increaseMenuItemQuantity,
   removeSingleMenuItem,
 } from "../../../redux/features/OrderLog/orderLogSlice";
-import PrimaryInvoice from "../PrimaryInvoice/PrimaryInvoice";
+import PrimaryInvoiceFooter from "../PrimaryInvoice/PrimaryInvoiceFooter";
 import PrimaryError from "../../PrimaryError/PrimaryError";
 
 const DisplayOrderInvoice = ({
@@ -108,7 +108,7 @@ const DisplayOrderInvoice = ({
                             ?.sort((a, b) =>
                               a?.item_name?.localeCompare(b?.item_name)
                             )
-                            .map((item, i) => (
+                            .map((item) => (
                               <tr
                                 key={item?._id}
                                 className={`border-b ${
@@ -166,7 +166,10 @@ const DisplayOrderInvoice = ({
                 Remove All <PiBagFill className="ml-2 h-5 w-5 text-gray-200" />
               </button>
 
-              <PrimaryInvoice tableWiseOrder={tableWiseOrder} />
+              <PrimaryInvoiceFooter
+                tableWiseOrder={tableWiseOrder}
+                selectedStaff={selectedStaff}
+              />
             </div>
           ) : (
             <div className="my-6">
