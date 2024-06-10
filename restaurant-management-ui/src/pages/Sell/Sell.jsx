@@ -1,8 +1,21 @@
+import { useEffect, useState } from "react";
 import Table from "../../components/SellSection/Table/Table";
 import { useGetAllTablesQuery } from "../../redux/features/table/tableApi";
 
 const Sell = () => {
   const { data: tables, error, isLoading } = useGetAllTablesQuery();
+
+  const [filteredTable, setFilteredTable] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+
+  useEffect(() => {
+    if (tables?.data) {
+      const filtered = tables?.data?.filter((table) =>
+        table?.table_name?.toLowerCase().includes(searchValue?.toLowerCase())
+      );
+      setFilteredTable(filtered);
+    }
+  }, [searchValue, tables]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -22,12 +35,26 @@ const Sell = () => {
         <h1 className="text-center text-blue-600 text-2xl font-semibold mb-4">
           Select a Table First
         </h1>
+        <div className="mb-6">
+          <div className="search-menu">
+            <input
+              value={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+              className="rounded"
+              type="search"
+              placeholder="Search table..."
+            />
+          </div>
+        </div>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {tables?.data?.map((table) => (
+          {filteredTable?.map((table) => (
             <Table
               key={table?._id}
               link={table?.table_slug}
               title={table?.table_name}
+              tableSlug={table?.table_slug}
             />
           ))}
         </div>
