@@ -26,7 +26,7 @@ const StaffRecords = () => {
     },
   ];
 
-  const { data: staffs, isLoading } = useGetAllStaffsQuery({
+  const { data: staffs, isLoading: staffLoading } = useGetAllStaffsQuery({
     searchValue,
     pageValue: currentPage,
     limitValue: pageSize,

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Table from "../../components/SellSection/Table/Table";
 import { useGetAllTablesQuery } from "../../redux/features/table/tableApi";
+import TableSkeleton from "../../components/Skeleton/TableSkeleton";
 
 const Sell = () => {
   const { data: tables, error, isLoading } = useGetAllTablesQuery();
@@ -16,10 +17,6 @@ const Sell = () => {
       setFilteredTable(filtered);
     }
   }, [searchValue, tables]);
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   if (tables?.data?.length == 0) {
     return <div>No data found</div>;
@@ -48,6 +45,13 @@ const Sell = () => {
             />
           </div>
         </div>
+        {isLoading && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <TableSkeleton key={i} />
+            ))}
+          </div>
+        )}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredTable?.map((table) => (
             <Table

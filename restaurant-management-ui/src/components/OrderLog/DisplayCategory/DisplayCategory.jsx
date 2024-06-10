@@ -4,6 +4,7 @@ import { useDispatch } from "react-redux";
 import { addOrderMenuItem } from "../../../redux/features/OrderLog/orderLogSlice";
 import DisplayItem from "../DisplayItem/DisplayItem";
 import { useGetAllMenuItemsQuery } from "../../../redux/features/menuItemApi/menuItemApi";
+import MenuItemSkeleton from "../../Skeleton/MenuItemSkeleton";
 
 const DisplayCategory = ({
   selectedStaff,
@@ -43,6 +44,8 @@ const DisplayCategory = ({
 
   return (
     <div className="grid md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-2 mt-6">
+      {menuLoading &&
+        Array.from({ length: 4 }).map((_, i) => <MenuItemSkeleton key={i} />)}
       {uniqueCategories
         ?.sort((a, b) => a?.localeCompare(b))
         .map((category, index) => (
@@ -70,6 +73,7 @@ const DisplayCategory = ({
               index={index}
               handleAddToCart={handleAddToCart}
               commonMenuItems={commonMenuItems}
+              menuLoading={menuLoading}
             />
           </div>
         ))}
