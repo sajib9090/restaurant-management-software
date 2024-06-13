@@ -9,6 +9,11 @@ import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import CurrencyFormatter from "../Currencyformatter/CurrencyFormatter";
 import PrimaryLoading from "../Loading/PrimaryLoading/PrimaryLoading";
 import { toast } from "sonner";
+import { FaFileInvoice } from "react-icons/fa";
+import { TbCoinTakaFilled } from "react-icons/tb";
+import { CiCalendarDate } from "react-icons/ci";
+import DateFormatter from "../DateFormatter/DateFormatter";
+import ExpandDetails from "./ExpandDetails";
 
 const Member = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -31,8 +36,9 @@ const Member = () => {
       title: "Mobile",
       dataIndex: "mobile",
       key: "mobile",
-      className: "text-gray-500 w-[20%]",
+      className: "text-gray-500 w-[17%]",
     },
+
     {
       title: "Total Spent",
       dataIndex: "total_spent",
@@ -78,11 +84,12 @@ const Member = () => {
           {member?.name}
         </div>
       ),
+      member: member,
       mobile: (
         <div>
           <p className="text-blue-600 font-semibold">{member?.mobile}</p>
           <span className="text-xs">
-            {new Date(member?.createdAt).toLocaleString()}
+            <DateFormatter dateString={member?.createdAt} />
           </span>
         </div>
       ),
@@ -121,11 +128,9 @@ const Member = () => {
 
   const expandedRowRender = (record) => {
     return (
-      <div>
-        <p>
-          <strong>Name:</strong> {record.name}
-        </p>
-      </div>
+      <>
+        <ExpandDetails record={record} />
+      </>
     );
   };
 

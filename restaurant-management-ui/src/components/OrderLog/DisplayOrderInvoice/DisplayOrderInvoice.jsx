@@ -169,6 +169,7 @@ const DisplayOrderInvoice = ({
               <PrimaryInvoiceFooter
                 tableWiseOrder={tableWiseOrder}
                 selectedStaff={selectedStaff}
+                table_name={table_name}
               />
             </div>
           ) : (

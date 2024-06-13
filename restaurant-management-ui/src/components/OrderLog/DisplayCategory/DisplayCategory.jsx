@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
@@ -23,13 +24,14 @@ const DisplayCategory = ({
   const uniqueCategories = [...new Set(menuCategories)];
 
   const handleAddToCart = (menu) => {
+    const { createdAt, createdBy, ...menuCopy } = menu;
     if (!selectedStaff) {
       toast.error("Please select a staff first");
     } else {
       const data = {
         table: table_name,
         served_by: selectedStaff,
-        ...menu,
+        ...menuCopy,
       };
       dispatch(addOrderMenuItem(data));
       toast.success(`${menu?.item_name} - has been added`);

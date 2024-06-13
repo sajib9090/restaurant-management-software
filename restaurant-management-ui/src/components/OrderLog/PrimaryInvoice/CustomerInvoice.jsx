@@ -1,21 +1,20 @@
 /* eslint-disable react/prop-types */
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import CustomModal from "../../Modal/Modal";
 import CurrencyFormatter from "../../Currencyformatter/CurrencyFormatter";
 import ReactToPrint from "react-to-print";
 import DateFormatter from "../../DateFormatter/DateFormatter";
-import { useSelector } from "react-redux";
-import { currentUser } from "../../../redux/features/auth/authSlice";
+import brandLogo from "../../../../public/image/brandlogo/5929158_cooking_food_hot_kitchen_restaurant_icon.png";
 
 const CustomerInvoice = ({
   tableWiseOrder,
   totalDiscount,
   totalBill,
   selectedStaff,
+  user,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const componentRef = useRef();
-  const user = useSelector(currentUser);
 
   return (
     <>
@@ -39,12 +38,20 @@ const CustomerInvoice = ({
             <div className="text-center mt-6">
               <div className="mx-auto w-full">
                 <img
-                  src="https://i.ibb.co/CvZ6N5H/food-republic-bw-logo.png"
+                  src={
+                    user?.brand?.brand_logo
+                      ? user?.brand?.brand_logo
+                      : brandLogo
+                  }
                   alt=""
-                  className="h-[50px] text-center mx-auto"
+                  className="h-[50px] text-center mx-auto grayscale"
                 />
               </div>
-              <h1 className="text-2xl font-bold">Food Republic</h1>
+              <h1 className="text-2xl font-bold capitalize">
+                {user?.brand?.brand_name
+                  ? user?.brand?.brand_name
+                  : "Restaurant Name"}
+              </h1>
               <p className="text-[8.5px] -mt-0.5">
                 Mazhi Plaza 2nd floor, Naria, Shariatpur
               </p>

@@ -31,7 +31,7 @@ const StaffSelection = ({
     const data = {
       table: table_name,
       staffName: value,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
     dispatch(setStaff(data));
   };

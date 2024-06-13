@@ -35,6 +35,7 @@ const MaintainMembers = lazy(() =>
 const StaffRecords = lazy(() =>
   import("../pages/Dashboard/StaffRecords/StaffRecords")
 );
+const SoldInvoice = lazy(() => import("../pages/Sell/SoldInvoice/SoldInvoice"));
 
 export const router = createBrowserRouter([
   {
@@ -127,6 +128,14 @@ export const router = createBrowserRouter([
         element: (
           <Suspense fallback={<h1>Loading...</h1>}>
             <SelectOrder />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/user/sell/:name/:invoice_id",
+        element: (
+          <Suspense fallback={<h1>Loading...</h1>}>
+            <SoldInvoice />
           </Suspense>
         ),
       },
