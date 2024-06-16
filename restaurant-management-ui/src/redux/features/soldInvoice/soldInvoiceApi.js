@@ -3,45 +3,41 @@ import { baseApi } from "../api/baseApi";
 const soldInvoiceApi = baseApi.injectEndpoints({
   tagTypes: ["SoldInvoice"],
   endpoints: (builder) => ({
-    // getAllMenuItems: builder.query({
-    //   query: ({
-    //     searchValue = "",
-    //     pageValue = "",
-    //     limitValue,
-    //     categoryValue = "",
-    //     priceFilterValue = "",
-    //   } = {}) => {
-    //     let queryString = `/menu-items/get-all?search=${searchValue}`;
-    //     if (pageValue) {
-    //       queryString += `&page=${pageValue}`;
-    //     }
-    //     if (limitValue) {
-    //       queryString += `&limit=${limitValue}`;
-    //     }
-    //     if (limitValue) {
-    //       queryString += `&limit=${limitValue}`;
-    //     }
-    //     if (categoryValue) {
-    //       queryString += `&category=${categoryValue}`;
-    //     }
-    //     if (priceFilterValue) {
-    //       queryString += `&price=${priceFilterValue}`;
-    //     }
-    //     return {
-    //       url: queryString,
-    //       method: "GET",
-    //     };
-    //   },
-    //   providesTags: ["MenuItem"],
-    // }),
+    getAllSellAlsoDateFilter: builder.query({
+      query: ({
+        pageValue = "",
+        limitValue,
+        date = "",
+        start_date = "",
+        end_date = "",
+      } = {}) => {
+        let queryString = `/sold-invoices/get-sold-invoices?page=${pageValue}`;
+
+        if (limitValue) {
+          queryString += `&limit=${limitValue}`;
+        }
+
+        if (date) {
+          queryString += `&date=${date}`;
+        }
+        if (start_date && end_date) {
+          queryString += `&start_date=${start_date}&end_date=${end_date}`;
+        }
+
+        return {
+          url: queryString,
+          method: "GET",
+        };
+      },
+      providesTags: ["SoldInvoice"],
+    }),
+
     getSingleInvoiceById: builder.query({
       query: ({ invoice_id = "" }) => ({
         url: `/sold-invoices/get-sold-invoice/${invoice_id}`,
         method: "GET",
       }),
-      providesTags: (result, error, { invoice_id }) => [
-        { type: "SoldInvoice", id: invoice_id },
-      ],
+      providesTags: ["SoldInvoice"],
     }),
     addSoldInvoice: builder.mutation({
       query: (data) => ({
@@ -49,7 +45,7 @@ const soldInvoiceApi = baseApi.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["SoldInvoice"],
+      invalidatesTags: ["SoldInvoice", "Member"],
     }),
     // deleteMenuItem: builder.mutation({
     //   query: (ids) => ({
@@ -71,7 +67,7 @@ const soldInvoiceApi = baseApi.injectEndpoints({
 });
 
 export const {
-  //   useGetAllMenuItemsQuery,
+  useGetAllSellAlsoDateFilterQuery,
   useAddSoldInvoiceMutation,
   useGetSingleInvoiceByIdQuery,
   //   useDeleteMenuItemMutation,

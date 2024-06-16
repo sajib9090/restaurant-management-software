@@ -6,6 +6,7 @@ import CurrencyFormatter from "../Currencyformatter/CurrencyFormatter";
 import DateFormatter from "../DateFormatter/DateFormatter";
 
 const ExpandDetails = ({ record }) => {
+  
   return (
     <div className="p-4">
       <p className="text-2xl font-bold text-blue-700 mb-6">

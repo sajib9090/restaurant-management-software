@@ -28,6 +28,7 @@ import {
 import {
   handleCreateMember,
   handleDeleteMember,
+  handleEditMember,
   handleGetMembers,
   handleGetSingleMemberByMobile,
 } from "../controllers/memberControllers.js";
@@ -39,6 +40,7 @@ import {
 import {
   handleAddSoldInvoice,
   handleGetSoldInvoiceById,
+  handleGetSoldInvoices,
 } from "../controllers/soldInvoiceControllers.js";
 
 export const apiRouter = express.Router();
@@ -93,6 +95,7 @@ apiRouter.get(
   handleGetSingleMemberByMobile
 );
 apiRouter.delete("/members/delete-member", isLoggedIn, handleDeleteMember);
+apiRouter.patch("/members/update-member/:id", isLoggedIn, handleEditMember);
 //staff route
 apiRouter.post("/staffs/create-staff", isLoggedIn, handleCreateStaff);
 apiRouter.get("/staffs/get-all", isLoggedIn, handleGetStaffs);
@@ -107,4 +110,9 @@ apiRouter.get(
   "/sold-invoices/get-sold-invoice/:invoice_id",
   isLoggedIn,
   handleGetSoldInvoiceById
+);
+apiRouter.get(
+  "/sold-invoices/get-sold-invoices",
+  isLoggedIn,
+  handleGetSoldInvoices
 );

@@ -9,11 +9,10 @@ import { EditFilled, DeleteFilled } from "@ant-design/icons";
 import CurrencyFormatter from "../Currencyformatter/CurrencyFormatter";
 import PrimaryLoading from "../Loading/PrimaryLoading/PrimaryLoading";
 import { toast } from "sonner";
-import { FaFileInvoice } from "react-icons/fa";
-import { TbCoinTakaFilled } from "react-icons/tb";
-import { CiCalendarDate } from "react-icons/ci";
 import DateFormatter from "../DateFormatter/DateFormatter";
 import ExpandDetails from "./ExpandDetails";
+import CustomModal from "../Modal/Modal";
+import EditMember from "./EditMember";
 
 const Member = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -22,6 +21,8 @@ const Member = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [memberData, setMemberData] = useState({});
 
   const columns = [
     Table.SELECTION_COLUMN,
@@ -110,7 +111,10 @@ const Member = () => {
       discount: member?.discount_value + "%",
       actions: (
         <button
-          onClick={() => {}}
+          onClick={() => {
+            setMemberData(member);
+            setIsModalOpen(!isModalOpen);
+          }}
           title="Edit"
           className="text-blue-600 text-xl ml-4"
         >
@@ -287,6 +291,19 @@ const Member = () => {
           showSizeChanger
         />
       </div>
+
+      {/* modal */}
+      <CustomModal
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+        closeSymbolFalse={true}
+      >
+        <EditMember
+          setIsModalOpen={setIsModalOpen}
+          setSelectedRowKeys={setSelectedRowKeys}
+          memberData={memberData}
+        />
+      </CustomModal>
     </div>
   );
 };
