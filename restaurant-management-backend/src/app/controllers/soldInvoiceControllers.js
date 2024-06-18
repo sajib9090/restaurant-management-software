@@ -60,7 +60,7 @@ export const handleAddSoldInvoice = async (req, res, next) => {
       totalDiscount = parseFloat(total_discount);
     }
 
-    const count = await membersCollection.countDocuments();
+    const count = await soldInvoiceCollection.countDocuments();
     const generateCode = crypto.randomBytes(16).toString("hex");
 
     const newInvoice = {
@@ -144,7 +144,7 @@ export const handleGetSoldInvoiceById = async (req, res, next) => {
 
 export const handleGetSoldInvoices = async (req, res, next) => {
   const { user } = req.user;
-  const { date, start_date, end_date } = req.query;
+  const { date, start_date, end_date, month } = req.query;
   const page = Number(req.query.page) || 1;
   const limit = Number(req.query.limit);
 
@@ -201,6 +201,21 @@ export const handleGetSoldInvoices = async (req, res, next) => {
         endOfDay.setUTCHours(23, 59, 59, 999);
         query.createdAt = { $gte: startOfDay, $lte: endOfDay };
       }
+      if (month) {
+        if (!validator.isISO8601(month, { strict: true })) {
+          throw createError(
+            400,
+            "Invalid month format. Expected format: YYYY-MM"
+          );
+        }
+        const startOfMonth = new Date(month);
+        startOfMonth.setUTCDate(1);
+        const endOfMonth = new Date(startOfMonth);
+        endOfMonth.setUTCMonth(endOfMonth.getUTCMonth() + 1);
+        endOfMonth.setUTCDate(0);
+        endOfMonth.setUTCHours(23, 59, 59, 999);
+        query.createdAt = { $gte: startOfMonth, $lte: endOfMonth };
+      }
     } else {
       if (date) {
         if (
@@ -244,6 +259,22 @@ export const handleGetSoldInvoices = async (req, res, next) => {
         const endOfDay = new Date(end_date);
         endOfDay.setUTCHours(23, 59, 59, 999);
         query.createdAt = { $gte: startOfDay, $lte: endOfDay };
+      }
+
+      if (month) {
+        if (!validator.isISO8601(month, { strict: true })) {
+          throw createError(
+            400,
+            "Invalid month format. Expected format: YYYY-MM"
+          );
+        }
+        const startOfMonth = new Date(month);
+        startOfMonth.setUTCDate(1);
+        const endOfMonth = new Date(startOfMonth);
+        endOfMonth.setUTCMonth(endOfMonth.getUTCMonth() + 1);
+        endOfMonth.setUTCDate(0);
+        endOfMonth.setUTCHours(23, 59, 59, 999);
+        query.createdAt = { $gte: startOfMonth, $lte: endOfMonth };
       }
     }
 

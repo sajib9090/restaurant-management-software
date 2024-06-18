@@ -20,11 +20,11 @@ const MultipleDatePicker = ({
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="">
       <Card className="bg-gray-100">
         <div className="p-2 space-y-6">
           <Row gutter={16} justify="space-between">
-            <Col span={11}>
+            <Col span={6}>
               <div>
                 <h4 className="text-lg font-semibold mb-1">
                   {selectedDate ? selectedDate : "Choose single date"}
@@ -35,7 +35,7 @@ const MultipleDatePicker = ({
                 />
               </div>
             </Col>
-            <Col span={11}>
+            <Col span={6}>
               <div>
                 <h4 className="text-lg font-semibold mb-1">
                   {selectedRange?.length === 2 &&

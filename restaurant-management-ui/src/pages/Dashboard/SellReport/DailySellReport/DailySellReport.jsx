@@ -4,9 +4,14 @@ import { useGetAllSellAlsoDateFilterQuery } from "../../../../redux/features/sol
 import { Pagination, Table } from "antd";
 import DateFormatter from "../../../../components/DateFormatter/DateFormatter";
 import CurrencyFormatter from "../../../../components/Currencyformatter/CurrencyFormatter";
+import SellReportFooter from "../../../../components/SellReport/SellReportFooter";
+import SellReportSkeleton from "../../../../components/Skeleton/SellReportSkeleton";
+import FindSpecificInvoice from "../../../../components/SellReport/FindSpecificInvoice";
 
 const DailySellReport = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [selectedRange, setSelectedRange] = useState([]);
   const [pageSize, setPageSize] = useState(100);
   const [currentPage, setCurrentPage] = useState(1);
@@ -18,7 +23,6 @@ const DailySellReport = () => {
       key: "invoiceId",
       className: "",
     },
-    Table.EXPAND_COLUMN,
     {
       title: "Served By",
       dataIndex: "servedBy",
@@ -45,18 +49,21 @@ const DailySellReport = () => {
     },
   ];
 
-  const { data: soldInvoices, isLoading } = useGetAllSellAlsoDateFilterQuery(
-    {
-      date: selectedDate,
-      start_date: selectedRange[0],
-      end_date: selectedRange[1],
-    },
-    {
-      skip:
-        !selectedDate &&
-        (!selectedRange || !selectedRange[0] || !selectedRange[1]),
-    }
-  );
+  const { data: soldInvoices, isLoading: sellReportLoading } =
+    useGetAllSellAlsoDateFilterQuery(
+      {
+        pageValue: currentPage,
+        limitValue: pageSize,
+        date: selectedDate,
+        start_date: selectedRange[0],
+        end_date: selectedRange[1],
+      },
+      {
+        skip:
+          !selectedDate &&
+          (!selectedRange || !selectedRange[0] || !selectedRange[1]),
+      }
+    );
 
   const data =
     soldInvoices?.data?.map((invoice, i) => ({
@@ -70,7 +77,9 @@ const DailySellReport = () => {
               pageSize}
             .
           </span>
-          <span className="bg-gray-200 text-base font-semibold px-2 py-1">{invoice?.invoice_id}</span>
+          <span className="bg-gray-200 text-base font-semibold px-2 py-1">
+            {invoice?.invoice_id}
+          </span>
         </div>
       ),
       servedBy: (
@@ -90,9 +99,19 @@ const DailySellReport = () => {
       ),
 
       discount: invoice?.total_discount ? (
-        <span className="text-red-600 font-bold">
-          <CurrencyFormatter value={invoice?.total_discount} />
-        </span>
+        <>
+          <span className="text-red-600 font-bold">
+            <CurrencyFormatter value={invoice?.total_discount} />
+          </span>
+          <span className="flex items-center justify-center">
+            <span>
+              {((invoice?.total_discount / invoice?.total_bill) * 100).toFixed(
+                1
+              )}
+              %
+            </span>
+          </span>
+        </>
       ) : (
         0
       ),
@@ -112,6 +131,7 @@ const DailySellReport = () => {
 
   return (
     <div className="min-h-screen px-4">
+      <FindSpecificInvoice />
       <MultipleDatePicker
         selectedDate={selectedDate}
         setSelectedDate={setSelectedDate}
@@ -119,29 +139,42 @@ const DailySellReport = () => {
         setSelectedRange={setSelectedRange}
       />
 
-      <div className="mt-6">
-        <Table
-          columns={columns}
-          dataSource={data}
-          pagination={false}
-          // expandable={{
-          //   expandedRowRender,
-          // }}
-        />
-
-        <div className="mt-2">
-          <Pagination
-            total={soldInvoices?.data_found || 0}
-            showTotal={(total, range) =>
-              `${range[0]}-${range[1]} of ${total} items`
-            }
-            pageSize={pageSize}
-            current={currentPage}
-            onChange={handlePaginationChange}
-            showSizeChanger
-          />
+      {sellReportLoading ? (
+        <SellReportSkeleton />
+      ) : (
+        <div className="mt-6">
+          <div className="text-center my-4 text-lg">
+            <span>
+              {selectedDate
+                ? selectedDate
+                : selectedRange &&
+                  selectedRange.length === 2 &&
+                  selectedRange[0] &&
+                  selectedRange[1]
+                ? selectedRange[0] + " " + "to" + " " + selectedRange[1]
+                : null}
+            </span>
+          </div>
+          <Table columns={columns} dataSource={data} pagination={false} />
+          {soldInvoices?.data_found > 0 && (
+            <>
+              <SellReportFooter soldInvoices={soldInvoices} />
+              <div className="mt-2">
+                <Pagination
+                  total={soldInvoices?.data_found || 0}
+                  showTotal={(total, range) =>
+                    `${range[0]}-${range[1]} of ${total} items`
+                  }
+                  pageSize={pageSize}
+                  current={currentPage}
+                  onChange={handlePaginationChange}
+                  showSizeChanger
+                />
+              </div>
+            </>
+          )}
         </div>
-      </div>
+      )}
     </div>
   );
 };

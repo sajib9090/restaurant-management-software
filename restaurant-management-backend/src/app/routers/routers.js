@@ -1,8 +1,10 @@
 import express from "express";
 import {
   handleActivateUserAccount,
+  handleAddBrandMaintainUser,
   handleCreateUser,
   handleGetUser,
+  handleGetUsers,
   handleLoginUser,
   handleRefreshToken,
 } from "../controllers/userControllers.js";
@@ -50,7 +52,13 @@ apiRouter.post("/users/create-user", handleCreateUser);
 apiRouter.get("/users/verify/:token", handleActivateUserAccount);
 apiRouter.post("/users/auth-user-login", handleLoginUser);
 apiRouter.get("/users/find-user/:id", isLoggedIn, handleGetUser);
+apiRouter.get("/users/find-users", isLoggedIn, handleGetUsers);
 apiRouter.get("/users/auth-manage-token", handleRefreshToken);
+apiRouter.post(
+  "/users/auth-create-user",
+  isLoggedIn,
+  handleAddBrandMaintainUser
+);
 //table route
 apiRouter.post("/tables/create-table", isLoggedIn, handleCreateTable);
 apiRouter.get("/tables/get-all", isLoggedIn, handleGetTables);

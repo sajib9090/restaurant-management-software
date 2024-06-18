@@ -10,6 +10,7 @@ const soldInvoiceApi = baseApi.injectEndpoints({
         date = "",
         start_date = "",
         end_date = "",
+        month = "",
       } = {}) => {
         let queryString = `/sold-invoices/get-sold-invoices?page=${pageValue}`;
 
@@ -22,6 +23,9 @@ const soldInvoiceApi = baseApi.injectEndpoints({
         }
         if (start_date && end_date) {
           queryString += `&start_date=${start_date}&end_date=${end_date}`;
+        }
+        if (month) {
+          queryString += `&month=${month}`;
         }
 
         return {
