@@ -3,7 +3,6 @@ import defaultAvatar from "../../../public/image/avatar/6791548_avatar_person_pr
 import { CameraOutlined } from "@ant-design/icons";
 import {
   useGetCurrentUserQuery,
-  useRemoveUserAvatarMutation,
   useUpdateUserAvatarMutation,
 } from "../../redux/features/user/userApi";
 import { toast } from "sonner";
@@ -16,8 +15,6 @@ const Profile = () => {
   const [updateUserAvatar, { isLoading: uploadLoading }] =
     useUpdateUserAvatarMutation();
 
-  const [removeUserAvatar, { isLoading: removeLoading }] =
-    useRemoveUserAvatarMutation();
   const handleFileChange = async (event) => {
     const file = event.target?.files[0];
     if (file) {
@@ -33,20 +30,6 @@ const Profile = () => {
       } catch (error) {
         toast.error(error?.data?.message);
       }
-    }
-  };
-
-  const handleRemoveImage = async () => {
-    try {
-      const res = await removeUserAvatar({ id: data?.data?.user_id }).unwrap();
-
-      if (res.success) {
-        toast.success(res?.message);
-      } else {
-        toast.error("Failed to remove avatar.");
-      }
-    } catch (err) {
-      toast.error(err?.data?.message || "An unexpected error occurred.");
     }
   };
 
@@ -78,22 +61,13 @@ const Profile = () => {
                   <CameraOutlined className="text-white text-2xl mb-1" />
                   <span className="text-white font-semibold">Change Image</span>
                   {showOptions && (
-                    <div className="absolute top-12 flex flex-col space-y-4 bg-white px-2 py-4 rounded shadow-md">
+                    <div className="absolute top-12 flex flex-col bg-white px-2 py-8 rounded shadow-md">
                       <button
                         className="text-gray-800 hover:text-blue-600 w-[120px]"
                         onClick={() => fileInputRef.current.click()}
                       >
                         Upload
                       </button>
-                      {data?.data?.avatar?.url && (
-                        <button
-                          disabled={removeLoading}
-                          className="text-gray-800 hover:text-red-600 w-[120px]"
-                          onClick={handleRemoveImage}
-                        >
-                          Remove
-                        </button>
-                      )}
                     </div>
                   )}
                 </>

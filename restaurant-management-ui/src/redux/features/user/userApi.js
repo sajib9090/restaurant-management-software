@@ -35,13 +35,6 @@ const userApi = baseApi.injectEndpoints({
       },
       invalidatesTags: ["User"],
     }),
-    removeUserAvatar: builder.mutation({
-      query: ({ id }) => ({
-        url: `/users/remove-avatar/${id}`,
-        method: "PATCH",
-      }),
-      invalidatesTags: ["User"],
-    }),
     getCurrentUser: builder.query({
       query: () => ({
         url: `/users/find-current-user`,
@@ -92,5 +85,4 @@ export const {
   //   useDeleteMenuItemMutation,
   //   useUpdateMenuItemMutation,
   useUpdateUserAvatarMutation,
-  useRemoveUserAvatarMutation,
 } = userApi;
