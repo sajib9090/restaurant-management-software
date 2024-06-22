@@ -1,11 +1,11 @@
 import { useState, useRef } from "react";
-import defaultAvatar from "../../../../public/image/avatar/6791548_avatar_person_profile_profile icon_user_icon.png";
+import defaultAvatar from "../../../public/image/avatar/6791548_avatar_person_profile_profile icon_user_icon.png";
 import { CameraOutlined } from "@ant-design/icons";
 import {
   useGetCurrentUserQuery,
   useRemoveUserAvatarMutation,
   useUpdateUserAvatarMutation,
-} from "../../../redux/features/user/userApi";
+} from "../../redux/features/user/userApi";
 import { toast } from "sonner";
 
 const Profile = () => {
