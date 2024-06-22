@@ -1,17 +1,16 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useGetSingleInvoiceByIdQuery } from "../../../redux/features/soldInvoice/soldInvoiceApi.js";
 import { useRef } from "react";
-import { useSelector } from "react-redux";
-import { currentUser } from "../../../redux/features/auth/authSlice.js";
 import brandLogo from "../../../../public/image/brandlogo/5929158_cooking_food_hot_kitchen_restaurant_icon.png";
 import DateFormatter from "../../../components/DateFormatter/DateFormatter.jsx";
 import CurrencyFormatter from "../../../components/Currencyformatter/CurrencyFormatter.jsx";
 import ReactToPrint from "react-to-print";
 import InvoiceSkeleton from "../../../components/Skeleton/InvoiceSkeleton.jsx";
+import { useGetCurrentUserQuery } from "../../../redux/features/user/userApi.js";
 
 const SoldInvoice = () => {
   const { invoice_id } = useParams();
-  const user = useSelector(currentUser);
+  const { data: user } = useGetCurrentUserQuery();
   const { data, isLoading } = useGetSingleInvoiceByIdQuery({ invoice_id });
   const componentRef = useRef();
   const navigate = useNavigate();
@@ -31,15 +30,15 @@ const SoldInvoice = () => {
             <div className="mx-auto w-full">
               <img
                 src={
-                  user?.brand?.brand_logo ? user?.brand?.brand_logo : brandLogo
+                  user?.data?.brand?.brand_logo ? user?.brand?.brand_logo : brandLogo
                 }
                 alt=""
                 className="h-[50px] text-center mx-auto grayscale"
               />
             </div>
             <h1 className="text-2xl font-bold capitalize">
-              {user?.brand?.brand_name
-                ? user?.brand?.brand_name
+              {user?.data?.brand?.brand_name
+                ? user?.data?.brand?.brand_name
                 : "Restaurant Name"}
             </h1>
             <p className="text-[8.5px] -mt-0.5">

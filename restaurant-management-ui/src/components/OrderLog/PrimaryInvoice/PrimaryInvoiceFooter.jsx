@@ -6,8 +6,7 @@ import PrimaryLoading from "../../Loading/PrimaryLoading/PrimaryLoading";
 import KitchenInvoice from "./KitchenInvoice";
 import CustomerInvoice from "./CustomerInvoice";
 import PaymentInvoice from "./PaymentInvoice";
-import { useSelector } from "react-redux";
-import { currentUser } from "../../../redux/features/auth/authSlice";
+import { useGetCurrentUserQuery } from "../../../redux/features/user/userApi";
 
 const PrimaryInvoice = ({ tableWiseOrder, selectedStaff, table_name }) => {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -18,7 +17,7 @@ const PrimaryInvoice = ({ tableWiseOrder, selectedStaff, table_name }) => {
   const [gotMoney, setGotMoney] = useState("");
   const [backMoney, setBackMoney] = useState("");
 
-  const user = useSelector(currentUser);
+  const { data: user } = useGetCurrentUserQuery();
 
   const totalBill = tableWiseOrder?.reduce(
     (total, item) => total + item?.item_quantity * item?.item_price,
@@ -170,10 +169,10 @@ const PrimaryInvoice = ({ tableWiseOrder, selectedStaff, table_name }) => {
           totalDiscount={totalDiscount}
           totalBill={totalBill}
           selectedStaff={selectedStaff}
-          user={user}
+          user={user?.data}
         />
         <PaymentInvoice
-          user={user}
+          user={user?.data}
           tableWiseOrder={tableWiseOrder}
           totalDiscount={totalDiscount}
           totalBill={totalBill}

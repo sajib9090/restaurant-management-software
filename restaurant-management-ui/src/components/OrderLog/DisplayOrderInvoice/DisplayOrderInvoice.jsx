@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import CustomModal from "../../Modal/Modal";
-import { useDispatch, useSelector } from "react-redux";
-import { currentUser } from "../../../redux/features/auth/authSlice";
+import { useDispatch } from "react-redux";
 import CurrencyFormatter from "../../Currencyformatter/CurrencyFormatter";
 import { DeleteFilled } from "@ant-design/icons";
 import { PiBagFill } from "react-icons/pi";
@@ -13,6 +12,7 @@ import {
 } from "../../../redux/features/OrderLog/orderLogSlice";
 import PrimaryInvoiceFooter from "../PrimaryInvoice/PrimaryInvoiceFooter";
 import PrimaryError from "../../PrimaryError/PrimaryError";
+import { useGetCurrentUserQuery } from "../../../redux/features/user/userApi";
 
 const DisplayOrderInvoice = ({
   tableWiseOrderQuantity,
@@ -22,7 +22,7 @@ const DisplayOrderInvoice = ({
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const user = useSelector(currentUser);
+  const { data: user } = useGetCurrentUserQuery();
   const dispatch = useDispatch();
 
   const categories = tableWiseOrder?.map((item) => item?.category);
@@ -60,7 +60,7 @@ const DisplayOrderInvoice = ({
         <div className="bg-gray-50 rounded-lg">
           <div className="text-center mb-6 capitalize">
             <h2 className="text-3xl font-bold text-indigo-600">
-              {user?.brand?.brand_name}
+              {user?.data?.brand?.brand_name}
             </h2>
             <p className="font-medium text-lg text-gray-700">{table_name}</p>
           </div>
