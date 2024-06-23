@@ -21,8 +21,8 @@ const SideDataBar = ({ collapsed, dark }) => {
           <div className="w-[80%] mx-auto">
             <img
               src={
-                user?.data?.brand?.brand_logo
-                  ? user?.data?.brand?.brand_logo
+                user?.data?.brand?.brand_logo?.url
+                  ? user?.data?.brand?.brand_logo?.url
                   : brandLogo
               }
               alt={user?.data?.brand?.brand_slug}
@@ -37,8 +37,8 @@ const SideDataBar = ({ collapsed, dark }) => {
           <div className="w-[50%] mx-auto">
             <img
               src={
-                user?.data?.brand?.brand_logo
-                  ? user?.data?.brand?.brand_logo
+                user?.data?.brand?.brand_logo?.url
+                  ? user?.data?.brand?.brand_logo?.url
                   : brandLogo
               }
               alt={user?.data?.brand?.brand_slug}

@@ -42,47 +42,11 @@ const userApi = baseApi.injectEndpoints({
       }),
       providesTags: ["User"],
     }),
-
-    // getSingleUserById: builder.query({
-    //   query: ({ user_id = "" }) => ({
-    //     url: `/users/find-user/${user_id}`,
-    //     method: "GET",
-    //   }),
-    //   providesTags: ["Users"],
-    // }),
-    // addSoldInvoice: builder.mutation({
-    //   query: (data) => ({
-    //     url: "/sold-invoices/add-sold-invoice",
-    //     method: "POST",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["SoldInvoice", "Member"],
-    // }),
-    // deleteMenuItem: builder.mutation({
-    //   query: (ids) => ({
-    //     url: `/menu-items/delete-menu-item`,
-    //     method: "DELETE",
-    //     body: ids,
-    //   }),
-    //   invalidatesTags: ["MenuItem"],
-    // }),
-    // updateMenuItem: builder.mutation({
-    //   query: ({ id, ...data }) => ({
-    //     url: `/menu-items/update-menu-item/${id}`,
-    //     method: "PATCH",
-    //     body: data,
-    //   }),
-    //   invalidatesTags: ["MenuItem"],
-    // }),
   }),
 });
 
 export const {
   useGetAllUserQuery,
   useGetCurrentUserQuery,
-  //   useAddSoldInvoiceMutation,
-  //   useGetSingleInvoiceByIdQuery,
-  //   useDeleteMenuItemMutation,
-  //   useUpdateMenuItemMutation,
   useUpdateUserAvatarMutation,
 } = userApi;

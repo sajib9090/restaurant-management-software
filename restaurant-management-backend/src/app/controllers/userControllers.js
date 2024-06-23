@@ -107,6 +107,10 @@ export const handleCreateUser = async (req, res, next) => {
         expiresAt: "",
         subscription_expired: true,
       },
+      contacts: {
+        mobile1: "",
+        mobile2: "",
+      },
       selected_plan: {
         id: "",
         name: "",
@@ -687,8 +691,7 @@ export const handleAddBrandMaintainUser = async (req, res, next) => {
 export const handleUpdateUserAvatar = async (req, res, next) => {
   const user = req.user.user ? req.user.user : req.user;
   const userId = req.params.id;
-  const filePath = req.file.path;
-
+  const bufferFile = req.file.buffer;
   try {
     if (!user) {
       throw createError(400, "User not found. Login Again");
@@ -697,7 +700,7 @@ export const handleUpdateUserAvatar = async (req, res, next) => {
       throw createError(400, "Invalid id");
     }
 
-    if (!filePath) {
+    if (!bufferFile) {
       throw createError(400, "Avatar is required");
     }
 
@@ -709,18 +712,18 @@ export const handleUpdateUserAvatar = async (req, res, next) => {
       throw createError(404, "User not found");
     }
 
-    if (existingUser.avatar && existingUser.avatar.id) {
-      const deletePreviousAvatar = await deleteFromCloudinary(
-        existingUser.avatar.id
-      );
-
-      if (deletePreviousAvatar.result !== "ok") {
-        throw createError(500, "Not updated. Try again");
-      }
+    if (
+      existingUser?.avatar &&
+      existingUser?.avatar?.id &&
+      existingUser?.avatar?.url
+    ) {
+      await deleteFromCloudinary(existingUser.avatar.id);
     }
 
-    const avatar = await uploadOnCloudinary(filePath);
+    const avatar = await uploadOnCloudinary(bufferFile);
+
     if (!avatar?.public_id) {
+      a;
       throw createError(500, "Something went wrong. Avatar not updated");
     }
 
@@ -738,5 +741,3 @@ export const handleUpdateUserAvatar = async (req, res, next) => {
     next(error);
   }
 };
-
-

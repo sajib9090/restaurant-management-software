@@ -17,6 +17,7 @@ const Profile = () => {
 
   const handleFileChange = async (event) => {
     const file = event.target?.files[0];
+  
     if (file) {
       const userId = data?.data?.user_id;
 
