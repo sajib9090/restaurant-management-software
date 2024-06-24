@@ -98,6 +98,7 @@ export const handleCreateUser = async (req, res, next) => {
       brand_name: processedBrandName,
       brand_slug: brandSlug,
       brand_logo: { id: "", url: "" },
+      address: { location: "", sub_district: "", district: "" },
       contact: { mobile1: "", mobile2: "" },
       payment_info: {
         payment_invoices: [],
@@ -106,10 +107,6 @@ export const handleCreateUser = async (req, res, next) => {
         last_payment: "",
         expiresAt: "",
         subscription_expired: true,
-      },
-      contacts: {
-        mobile1: "",
-        mobile2: "",
       },
       selected_plan: {
         id: "",

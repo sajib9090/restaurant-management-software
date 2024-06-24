@@ -19,12 +19,9 @@ const Brand = () => {
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
 
-    const userId = user?.data?.user_id;
-
     if (file) {
       try {
         const res = await updateBrandLogo({
-          id: userId,
           brandLogo: file,
         }).unwrap();
         toast.success(res?.message || "Logo uploaded successfully:");
@@ -182,7 +179,7 @@ const Brand = () => {
               </div>
             </div>
           </div>
-          <EditBrand />
+          <EditBrand brandInfo={brand} />
         </div>
       </div>
     </div>

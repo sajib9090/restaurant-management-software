@@ -47,7 +47,15 @@ const SideDataBar = ({ collapsed, dark }) => {
           <h1 className="text-2xl text-center font-bold capitalize">
             {user?.data?.brand?.brand_name}
           </h1>
-          <address className="text-center">Naria, Shariatpur</address>
+          <address className="text-center capitalize">
+            {user?.data?.brand?.address?.sub_district
+              ? user?.data?.brand?.address?.sub_district
+              : "sub district"}
+            ,{" "}
+            {user?.data?.brand?.address?.district
+              ? user?.data?.brand?.address?.district
+              : "District"}
+          </address>
         </div>
       )}
     </div>

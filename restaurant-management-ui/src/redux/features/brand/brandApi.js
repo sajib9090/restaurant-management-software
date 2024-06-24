@@ -23,12 +23,12 @@ const brandApi = baseApi.injectEndpoints({
     //   providesTags: ["User"],
     // }),
     updateBrandLogo: builder.mutation({
-      query: ({ id, brandLogo }) => {
+      query: ({brandLogo }) => {
         const formData = new FormData();
         formData.append("brandLogo", brandLogo);
 
         return {
-          url: `/brands/update-brand-logo/${id}`,
+          url: `/brands/update-brand-logo`,
           method: "PATCH",
           body: formData,
         };
@@ -36,8 +36,8 @@ const brandApi = baseApi.injectEndpoints({
       invalidatesTags: ["Brand", "User"],
     }),
     updateBrandInfo: builder.mutation({
-      query: ({ id, ...data }) => ({
-        url: `/brands/update-info/${id}`,
+      query: (data ) => ({
+        url: `/brands/update-info`,
         method: "PATCH",
         body: data,
       }),
