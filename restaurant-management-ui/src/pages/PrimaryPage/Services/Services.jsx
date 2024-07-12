@@ -1,7 +1,11 @@
+import FeaturedDishes from "../../Home/FeaturedDishes/FeaturedDishes";
+import OurServices from "../../Home/OurServices/OurServices";
+
 const Services = () => {
   return (
     <div>
-      <h1>Services</h1>
+    <FeaturedDishes />
+      <OurServices />
     </div>
   );
 };
