@@ -11,6 +11,8 @@
   "author": "sajib hossain",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "framer-motion": "^11.3.2",
+    "swiper": "^11.1.4"
   }
 }
